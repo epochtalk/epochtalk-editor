@@ -1,0 +1,22 @@
+{
+  "name": "epochtalk-editor",
+  "version": "0.0.0",
+  "description": "Post editor for epochtalk",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/slickage/epochtalk-editor.git"
+  },
+  "author": "Slickage",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/slickage/epochtalk-editor/issues"
+  },
+  "homepage": "https://github.com/slickage/epochtalk-editor",
+  "dependencies": {
+    "medium-editor": "^1.8.0"
+  }
+}
