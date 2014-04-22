@@ -1,14 +1,23 @@
 <html>
 <head>
   <title>EpochTalk Editor</title>
+  <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/medium-editor.css"> <!-- Core -->
   <link rel="stylesheet" href="css/themes/default.css" id="medium-editor-theme"> <!-- or any other theme -->
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 </head>
 <body>
-  <div width="500" height="500" class="editable" contenteditable="true" data-placeholder="Type your text" data-medium-element="true">
-    Hello World
+  <div class="editor-container">
+    <div class="editable editor" contenteditable="true" data-placeholder="Type your text" data-medium-element="true">
+      <h3>Medium</h3>
+      Slow-carb lomo next level, Thundercats banjo High Life Echo Park roof party Intelligentsia gluten-free locavore Shoreditch Portland master cleanse skateboard. Leggings Shoreditch vinyl chambray tote bag, kitsch meggings fixie. Mumblecore deep v Truffaut pour-over Helvetica. Fixie artisan XOXO Pinterest narwhal High Life, single-origin coffee Etsy sartorial distillery bespoke butcher trust fund Pitchfork. Raw denim quinoa pickled, cardigan PBR cred butcher McSweeney's vegan salvia chillwave Helvetica. Schlitz small batch Truffaut you probably haven't heard of them, kogi street art stumptown lomo selvage jean shorts wolf post-ironic. Bushwick messenger bag yr Marfa chia.
+    </div>
   </div>
   <script src="js/medium-editor.js"></script>
-  <script>var editor = new MediumEditor('.editable');</script>  
+  <script>
+      var editor = new MediumEditor('.editable', {
+          buttonLabels: 'fontawesome'
+      });
+  </script>
 </body>
 </html>
