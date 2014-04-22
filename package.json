@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/slickage/epochtalk-editor",
   "dependencies": {
-    "medium-editor": "^1.8.0"
+    "medium-editor": "^1.8.0",
+    "express": "^4.0.0",
+    "ejs": "^1.0.0"
   }
 }
