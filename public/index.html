@@ -4,20 +4,72 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/medium-editor.css"> <!-- Core -->
   <link rel="stylesheet" href="css/themes/default.css" id="medium-editor-theme"> <!-- or any other theme -->
-  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+  <link rel="stylesheet" href="css/xbbcode.css">
 </head>
 <body>
   <div class="editor-container">
-    <div class="editable editor" contenteditable="true" data-placeholder="Type your text" data-medium-element="true">
-      <h3>Medium</h3>
+    <h3>Medium</h3>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="editableCommand('bold');">
+        <i class="fa fa-bold"></i>
+      </button>
+      <button class="btn btn-primary" onclick="editableCommand('subscript');">
+        <i class="fa fa-subscript"></i>
+      </button>
+      <button class="btn btn-primary" onclick="editableCommand('superscript');">
+        <i class="fa fa-superscript"></i>
+      </button>
+      <button class="btn btn-primary" onclick="editableCommand('underline');">
+        <i class="fa fa-underline"></i>
+      </button>
+    </div>
+    <div id="medium-editor" class="editable editor" contenteditable="true" data-placeholder="Type your text" data-medium-element="true">
       Slow-carb lomo next level, Thundercats banjo High Life Echo Park roof party Intelligentsia gluten-free locavore Shoreditch Portland master cleanse skateboard. Leggings Shoreditch vinyl chambray tote bag, kitsch meggings fixie. Mumblecore deep v Truffaut pour-over Helvetica. Fixie artisan XOXO Pinterest narwhal High Life, single-origin coffee Etsy sartorial distillery bespoke butcher trust fund Pitchfork. Raw denim quinoa pickled, cardigan PBR cred butcher McSweeney's vegan salvia chillwave Helvetica. Schlitz small batch Truffaut you probably haven't heard of them, kogi street art stumptown lomo selvage jean shorts wolf post-ironic. Bushwick messenger bag yr Marfa chia.
     </div>
   </div>
+
+  <div class="editor-container">
+    <div class="container-fluid">
+      <div class="row">
+        <h3>BBCode</h3>
+        <textarea class="col-sm-6" id="bbcode-editor" onkeyup="processBBCode();"></textarea>
+        <div class="bbcode-preview-container col-sm-6">
+          <div class="col-sm-12" id="bbcode-preview"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
   <script src="js/medium-editor.js"></script>
+  <script src="js/xbbcode.js"></script>
   <script>
-      var editor = new MediumEditor('.editable', {
-          buttonLabels: 'fontawesome'
-      });
+    // Medium Editor
+    var editor = new MediumEditor('.editable', {
+        buttonLabels: 'fontawesome',
+        buttons: ['bold', 'italic', 'underline', 'anchor', 'header1', 'header2', 'quote', 'superscript', 'subscript', 'strikethrough', 'unorderedlist', 'orderedlist', 'image', 'indent', 'outdent'],
+        targetBlank: true
+    });
+
+    $('#medium-editor').on('input', function() {
+      var text = $('#medium-editor').html();
+      $('#bbcode-preview').html(text);
+      $('#bbcode-editor').val(text);
+    });
+
+    // BBCode Editor
+    function processBBCode() {
+      var code = document.getElementById("bbcode-editor").value;
+      var result = XBBCODE.process({text: code});
+      $("#bbcode-preview").html(result.html);
+      $("#medium-editor").html(result.html);
+    }
+
+    // static editor buttons
+    function editableCommand(command) { document.execCommand(command, false, null); }
   </script>
 </body>
 </html>
