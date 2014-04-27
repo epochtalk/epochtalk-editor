@@ -1,48 +1,121 @@
 html {
-  height: 100%;
-  width: 100%;
   margin: 0;
-  font-family: sans-serif;
+  padding: 0;
 }
 
 body {
-  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  background-color: gray;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
 }
 
-/* Bootstrap Hack for sub and super script */
-sub { vertical-align: sub !important; }
-sup { vertical-align: super !important; }
-
-.editor {
+.nav-container {
+  position: fixed;
+  top: 0;
+  height: 50px;
+  box-sizing: border-box;
   width: 100%;
-  height: 100%;
-  outline: none;
-  white-space: pre;
+  padding: 15px;
+  background-color: gray;
+}
+
+.main-container {
+  overflow:hidden;
+  position: absolute;
+  top: 50px;
+  bottom: 0;
+  width: 100%;
 }
 
 .editor-container {
-   width: 600px;
-   height: 450px;
-   border-radius: 10px;
-   border: 1px solid #ccc;
-   background-color: #fff;
-   padding: 15px;
-   margin: 0 auto;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  padding: 15px;
+  margin: 0 auto;
+  overflow: auto;
+  -webkit-transition: all linear 200ms;
+  -moz-transition: all linear 200ms;
+  -o-transition: all linear 200ms;
+  transition: all linear 200ms;
 }
 
-#bbcode-editor {
-  height: 300px;
-  padding: 0;
-  max-width: 50%;
+.editor-header-container {
+  box-sizing: border-box;
+  padding: 5px 0 10px 0; 
+  height: 40px;
 }
-.bbcode-preview-container {
-  padding-right: 0px !important;
+
+.editor-header {
+  display: block;
+  font-size: larger;
+  font-weight: bold;
 }
-#bbcode-preview {
-  height: 300px;
-  padding: 0;
-  border: 1px solid gray;
-  word-wrap: break-word;
-  overflow: scroll;
+
+.medium-buttons {
+  box-sizing: border-box; 
+  padding: 5px 10px 10px 10px;
+  height: 40px;
+}
+
+.medium-editor {
+  overflow: auto;
+  position: absolute;
+  top: 95;
+  bottom: 15px;
+  left: 20px;
+  right: 20px;
+  outline: none;
   white-space: pre;
 }
+.medium-editor p { margin: 0; }
+
+.bbcode-editor {
+  box-sizing: border-box;
+  padding: 15px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
+  outline: none;
+  height: 100%;
+  width: 100%;
+}
+
+.bbcode-preview {
+  box-sizing: border-box;
+  padding: 15px;
+  border: 1px solid gray;
+  word-wrap: break-word;
+  overflow: auto;
+  white-space: pre;
+  width: 100%;
+  height: 100%;
+}
+.bbcode-preview p { margin: 0; }
+
+
+.hide-editor {
+  opacity: 0;
+  height: 0;
+  visibility: hidden;
+  padding: 0;
+}
+
+.show-editor {
+  opacity: 1;
+  visibility: visible;
+}
+
+.split-container {
+  position: absolute;
+  top: 60px;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
+}
+
+.half-column { width: 50%; float: left; }

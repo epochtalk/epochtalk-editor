@@ -3,50 +3,98 @@
   <title>EpochTalk Editor</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/medium-editor.css"> <!-- Core -->
-  <link rel="stylesheet" href="css/themes/default.css" id="medium-editor-theme"> <!-- or any other theme -->
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/themes/mani.css" id="medium-editor-theme">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-  <link rel="stylesheet" href="css/xbbcode.css">
 </head>
 <body>
-  <div class="editor-container">
-    <h3>Medium</h3>
-    <div class="btn-group">
-      <button class="btn btn-primary" onclick="editableCommand('bold');">
-        <i class="fa fa-bold"></i>
-      </button>
-      <button class="btn btn-primary" onclick="editableCommand('subscript');">
-        <i class="fa fa-subscript"></i>
-      </button>
-      <button class="btn btn-primary" onclick="editableCommand('superscript');">
-        <i class="fa fa-superscript"></i>
-      </button>
-      <button class="btn btn-primary" onclick="editableCommand('underline');">
-        <i class="fa fa-underline"></i>
-      </button>
-    </div>
-    <div id="medium-editor" class="editable editor" contenteditable="true" data-placeholder="Type your text" data-medium-element="true">
-      Slow-carb lomo next level, Thundercats banjo High Life Echo Park roof party Intelligentsia gluten-free locavore Shoreditch Portland master cleanse skateboard. Leggings Shoreditch vinyl chambray tote bag, kitsch meggings fixie. Mumblecore deep v Truffaut pour-over Helvetica. Fixie artisan XOXO Pinterest narwhal High Life, single-origin coffee Etsy sartorial distillery bespoke butcher trust fund Pitchfork. Raw denim quinoa pickled, cardigan PBR cred butcher McSweeney's vegan salvia chillwave Helvetica. Schlitz small batch Truffaut you probably haven't heard of them, kogi street art stumptown lomo selvage jean shorts wolf post-ironic. Bushwick messenger bag yr Marfa chia.
+  <!-- Navigation -->
+  <div class="nav-container clearfix">
+    <div class="pull-right">
+      <select name="editor-select" id="editor-select">
+        <option value="medium">Medium</option>
+        <option value="bbcode">BBCode</option>
+      </select>
     </div>
   </div>
 
-  <div class="editor-container">
-    <div class="container-fluid">
-      <div class="row">
-        <h3>BBCode</h3>
-        <textarea class="col-sm-6" id="bbcode-editor" onkeyup="processBBCode();"></textarea>
-        <div class="bbcode-preview-container col-sm-6">
-          <div class="col-sm-12" id="bbcode-preview"></div>
+  <div class="main-container">
+    <!-- Medium Editor -->
+    <div id="medium-editor-container" class="editor-container">
+      <div class="editor-header-container">
+        <span class="editor-header">Medium</span>
+      </div>
+      <div class="medium-buttons">
+        <button onclick="editableCommand('bold');">
+          <i class="fa fa-bold"></i>
+        </button>
+        <button onclick="editableCommand('subscript');">
+          <i class="fa fa-subscript"></i>
+        </button>
+        <button onclick="editableCommand('superscript');">
+          <i class="fa fa-superscript"></i>
+        </button>
+        <button onclick="editableCommand('underline');">
+          <i class="fa fa-underline"></i>
+        </button>
+      </div>
+      <div id="medium-editor" class="editable medium-editor" contenteditable="true" data-placeholder="Type your text" data-medium-element="true">
+        Slow-carb lomo next level, Thundercats banjo High Life Echo Park roof party Intelligentsia gluten-free locavore Shoreditch Portland master cleanse skateboard. Leggings Shoreditch vinyl chambray tote bag, kitsch meggings fixie. Mumblecore deep v Truffaut pour-over Helvetica. Fixie artisan XOXO Pinterest narwhal High Life, single-origin coffee Etsy sartorial distillery bespoke butcher trust fund Pitchfork. Raw denim quinoa pickled, cardigan PBR cred butcher McSweeney's vegan salvia chillwave Helvetica. Schlitz small batch Truffaut you probably haven't heard of them, kogi street art stumptown lomo selvage jean shorts wolf post-ironic. Bushwick messenger bag yr Marfa chia.
+      </div>
+    </div>
+
+    <!-- BBCode Editor -->
+    <div id="bbcode-editor-container" class="editor-container hide-editor">
+      <div class="editor-header-container">
+        <span class="editor-header">BBCode</span>
+      </div>
+      <div class="split-container">
+        <div class="half-column">
+          <textarea id="bbcode-editor" class="bbcode-editor" onkeyup="processBBCode();"></textarea>
+        </div>
+        <div class="half-column">
+          <div id="bbcode-preview" class="bbcode-preview"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <!-- SCRIPTS!!! -->
   <script src="js/medium-editor.js"></script>
   <script src="js/xbbcode.js"></script>
   <script>
+    // editor switcher
+    var editorSelect = document.getElementById('editor-select');
+    editorSelect.addEventListener("change", function() {
+      // get selected option
+      var selectedIndex = editorSelect.options.selectedIndex;
+      var selectedOption = editorSelect.options[selectedIndex];
+      var editorValue = selectedOption.value;
+
+      // switch editor based on value
+      if (editorValue === 'bbcode') {
+        var bbcodeContainer = document.getElementById('bbcode-editor-container');
+        bbcodeContainer.className += ' show-editor';
+        bbcodeContainer.className = 
+          bbcodeContainer.className.replace( /(?:^|\s)hide-editor(?!\S)/g , '' );
+
+        var bbcodeContainer = document.getElementById('medium-editor-container');
+        bbcodeContainer.className += ' hide-editor';
+        bbcodeContainer.className = 
+          bbcodeContainer.className.replace( /(?:^|\s)show-editor(?!\S)/g , '' );
+      }
+      else {
+        var bbcodeContainer = document.getElementById('medium-editor-container');
+        bbcodeContainer.className += ' show-editor';
+        bbcodeContainer.className = 
+          bbcodeContainer.className.replace( /(?:^|\s)hide-editor(?!\S)/g , '' );
+
+        var bbcodeContainer = document.getElementById('bbcode-editor-container');
+        bbcodeContainer.className += ' hide-editor';
+        bbcodeContainer.className = 
+          bbcodeContainer.className.replace( /(?:^|\s)show-editor(?!\S)/g , '' );
+      }
+    });
+
     // Medium Editor
     var editor = new MediumEditor('.editable', {
         buttonLabels: 'fontawesome',
@@ -54,21 +102,24 @@
         targetBlank: true
     });
 
-    $('#medium-editor').on('input', function() {
-      var text = $('#medium-editor').html();
-      $('#bbcode-preview').html(text);
-      $('#bbcode-editor').val(text);
+    // bind to Medium Editor's input event
+    window.addEventListener('load', function() {
+      document.getElementById('medium-editor').addEventListener('input', function() {
+        var text = document.getElementById('medium-editor').innerHTML;
+        document.getElementById('bbcode-preview').innerHTML = text;
+        document.getElementById('bbcode-editor').value = text;
+      });
     });
 
     // BBCode Editor
     function processBBCode() {
       var code = document.getElementById("bbcode-editor").value;
       var result = XBBCODE.process({text: code});
-      $("#bbcode-preview").html(result.html);
-      $("#medium-editor").html(result.html);
+      document.getElementById('bbcode-preview').innerHTML = result.html;
+      document.getElementById('medium-editor').innerHTML = result.html;
     }
 
-    // static editor buttons
+    // static editor buttons commands
     function editableCommand(command) { document.execCommand(command, false, null); }
   </script>
 </body>
