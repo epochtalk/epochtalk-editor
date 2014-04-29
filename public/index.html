@@ -27,14 +27,38 @@
         <button onclick="editableCommand('bold');">
           <i class="fa fa-bold"></i>
         </button>
+         <button onclick="editableCommand('italic');">
+          <i class="fa fa-italic"></i>
+        </button>
+        <button onclick="editableCommand('underline');">
+          <i class="fa fa-underline"></i>
+        </button>
+        <button onclick="editableCommand('anchor');">
+          <i class="fa fa-link"></i>
+        </button>
+        <button onclick="editableCommand('append-h3');">
+          <b>H1</b>
+        </button>
+        <button onclick="editableCommand('append-h4');">
+          <b>H2</b>
+        </button>
+        <button onclick="editableCommand('append-blockquote');">
+          <i class="fa fa-quote-right"></i>
+        </button>
         <button onclick="editableCommand('subscript');">
           <i class="fa fa-subscript"></i>
         </button>
         <button onclick="editableCommand('superscript');">
           <i class="fa fa-superscript"></i>
         </button>
-        <button onclick="editableCommand('underline');">
-          <i class="fa fa-underline"></i>
+        <button onclick="editableCommand('strikethrough');">
+          <strike>A</strike>
+        </button>
+        <button onclick="editableCommand('insertunorderedlist');">
+          <i class="fa fa-list-ul"></i>
+        </button>
+        <button onclick="editableCommand('insertorderedlist');">
+          <i class="fa fa-list-ol"></i>
         </button>
       </div>
       <div id="medium-editor" class="editable medium-editor" contenteditable="true" data-placeholder="Type your text" data-medium-element="true">
@@ -47,9 +71,47 @@
       <div class="editor-header-container">
         <span class="editor-header">BBCode</span>
       </div>
+      <div class="medium-buttons">
+        <button onmousedown="bbcodeCommand('[b]', '[/b]');">
+          <i class="fa fa-bold"></i>
+        </button>
+         <button onmousedown="bbcodeCommand('[i]', '[/i]');">
+          <i class="fa fa-italic"></i>
+        </button>
+        <button onmousedown="bbcodeCommand('[u]', '[/u]');">
+          <i class="fa fa-underline"></i>
+        </button>
+        <button onmousedown="bbcodeCommand('[url]', '[/url]');">
+          <i class="fa fa-link"></i>
+        </button>
+        <button onmousedown="bbcodeCommand('[size=20pt]', '[/size]');">
+          <b>H1</b>
+        </button>
+        <button onmousedown="bbcodeCommand('[size=15pt]', '[/size]');">
+          <b>H2</b>
+        </button>
+        <button onmousedown="bbcodeCommand('[quote]', '[/quote]');">
+          <i class="fa fa-quote-right"></i>
+        </button>
+        <button onmousedown="bbcodeCommand('[sub]', '[/sub]');">
+          <i class="fa fa-subscript"></i>
+        </button>
+        <button onmousedown="bbcodeCommand('[sup]', '[/sup]');">
+          <i class="fa fa-superscript"></i>
+        </button>
+        <button onmousedown="bbcodeCommand('[s]', '[/s]');">
+          <strike>A</strike>
+        </button>
+        <button onmousedown="bbcodeCommand('[ul]', '[/ul]');">
+          <i class="fa fa-list-ul"></i>
+        </button>
+        <button onmousedown="bbcodeCommand('[ol]', '[/ol]');">
+          <i class="fa fa-list-ol"></i>
+        </button>
+      </div>
       <div class="split-container">
         <div class="half-column">
-          <textarea id="bbcode-editor" class="bbcode-editor" onkeyup="processBBCode();"></textarea>
+          <div id="bbcode-editor" class="bbcode-editor" contenteditable="true" onkeyup="processBBCode();"></div>
         </div>
         <div class="half-column">
           <div id="bbcode-preview" class="bbcode-preview"></div>
@@ -98,7 +160,7 @@
     // Medium Editor
     var editor = new MediumEditor('.editable', {
         buttonLabels: 'fontawesome',
-        buttons: ['bold', 'italic', 'underline', 'anchor', 'header1', 'header2', 'quote', 'superscript', 'subscript', 'strikethrough', 'unorderedlist', 'orderedlist', 'image', 'indent', 'outdent'],
+        buttons: ['bold', 'italic', 'underline', 'anchor', 'header1', 'header2', 'quote', 'superscript', 'subscript', 'strikethrough', 'unorderedlist', 'orderedlist'],
         targetBlank: true
     });
 
@@ -107,20 +169,42 @@
       document.getElementById('medium-editor').addEventListener('input', function() {
         var text = document.getElementById('medium-editor').innerHTML;
         document.getElementById('bbcode-preview').innerHTML = text;
-        document.getElementById('bbcode-editor').value = text;
+        document.getElementById('bbcode-editor').innerHTML = text;
       });
     });
 
     // BBCode Editor
     function processBBCode() {
-      var code = document.getElementById("bbcode-editor").value;
+      var code = document.getElementById("bbcode-editor").innerHTML;
       var result = XBBCODE.process({text: code});
       document.getElementById('bbcode-preview').innerHTML = result.html;
       document.getElementById('medium-editor').innerHTML = result.html;
     }
 
     // static editor buttons commands
-    function editableCommand(command) { document.execCommand(command, false, null); }
+    function editableCommand(command, parameter) { 
+      editor.execAction(command, parameter);
+    }
+
+    function bbcodeCommand(open, close) {
+      // get selection
+      var text, selection;
+      if (document.selection) { selection = document.selection.createRange().text; }
+      else { selection = window.getSelection(); }
+
+      // prepend
+      text = selection.toString();
+      text = open + text + close;
+
+      // append text
+      if (selection.rangeCount) {
+        range = selection.getRangeAt(0);
+        range.deleteContents();
+        var textNode = document.createTextNode(text);
+        range.insertNode(textNode);
+        processBBCode();
+      }
+    }
   </script>
 </body>
 </html>

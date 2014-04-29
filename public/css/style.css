@@ -1,18 +1,10 @@
-html {
-  margin: 0;
-  padding: 0;
-}
+html { margin: 0; padding: 0; }
+body { margin: 0; padding: 0; }
 
-body {
-  margin: 0;
-  padding: 0;
-  background-color: gray;
+.nav-container {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
-}
-
-.nav-container {
   position: fixed;
   top: 0;
   height: 50px;
@@ -28,6 +20,9 @@ body {
   top: 50px;
   bottom: 0;
   width: 100%;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.42857143;
 }
 
 .editor-container {
@@ -36,8 +31,7 @@ body {
   height: 100%;
   background-color: #fff;
   padding: 15px;
-  margin: 0 auto;
-  overflow: auto;
+  overflow: hidden;
   -webkit-transition: all linear 200ms;
   -moz-transition: all linear 200ms;
   -o-transition: all linear 200ms;
@@ -46,7 +40,7 @@ body {
 
 .editor-header-container {
   box-sizing: border-box;
-  padding: 5px 0 10px 0; 
+  padding: 5px 0 5px 0; 
   height: 40px;
 }
 
@@ -58,14 +52,19 @@ body {
 
 .medium-buttons {
   box-sizing: border-box; 
-  padding: 5px 10px 10px 10px;
+  padding: 0px 10px 15px 0px;
   height: 40px;
+}
+.medium-buttons > button {
+  height: 40px;
+  width: 40px;
+  font-size: medium;
 }
 
 .medium-editor {
-  overflow: auto;
+  overflow: hidden;
   position: absolute;
-  top: 95;
+  top: 110;
   bottom: 15px;
   left: 20px;
   right: 20px;
@@ -76,6 +75,7 @@ body {
 
 .bbcode-editor {
   box-sizing: border-box;
+  border: 1px solid gray;
   padding: 15px;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 14px;
@@ -112,7 +112,7 @@ body {
 
 .split-container {
   position: absolute;
-  top: 60px;
+  top: 110px;
   bottom: 15px;
   left: 15px;
   right: 15px;
