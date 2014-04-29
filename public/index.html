@@ -131,11 +131,14 @@
       // Gets div containing each editors buttons
       var bbcodeBtnList = document.getElementById('ee-bbcode-btn-list');
       var mediumBtnList = document.getElementById('ee-medium-btn-list');
+      var mediumToolBar = document.getElementById('medium-editor-toolbar-1');
 
       // switch editor based on value
       if (editorValue === 'bbcode') {
         mediumBtnList.className='ee-medium-buttons ee-hide';
         bbcodeBtnList.className='ee-medium-buttons ee-show';
+        mediumToolBar.style.display = 'none';
+
         var bbcodeContainer = document.getElementById('bbcode-editor-container');
         bbcodeContainer.className += ' ee-show-editor';
         bbcodeContainer.className = 
@@ -149,6 +152,8 @@
       else {
         bbcodeBtnList.className='ee-medium-buttons ee-hide';
         mediumBtnList.className='ee-medium-buttons ee-show';
+        mediumToolBar.style.display = 'block';
+
         var bbcodeContainer = document.getElementById('medium-editor-container');
         bbcodeContainer.className += ' ee-show-editor';
         bbcodeContainer.className = 
