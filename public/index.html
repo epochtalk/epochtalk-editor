@@ -217,8 +217,8 @@
     }
 
     function getCaretPosition(element) {
-      var ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
-      var w3 = (typeof window.getSelection != "undefined") && true;
+      var ie = typeof document.selection != 'undefined' && document.selection.type != 'Control';
+      var w3 = typeof window.getSelection != 'undefined';
       var caretOffset = 0;
       if (w3) {
         var range = window.getSelection().getRangeAt(0);
@@ -252,6 +252,7 @@
       text = open + text + close;
 
       // append text
+      var ctl = document.getElementById('bbcode-editor');
       if (selection.rangeCount) {
         range = selection.getRangeAt(0);
         range.deleteContents();
@@ -259,11 +260,9 @@
         range.insertNode(textNode);
         processBBCode();
 
-      // Update caret position
-      var ctl = document.getElementById('bbcode-editor');
-      var startPos = ctl.selectionStart;
-      var endPos = ctl.selectionEnd;
-      setCaret(ctl, Number(getCaretPosition(ctl)) + open.length);
+        // Update caret position
+        ctl = document.getElementById('bbcode-editor');
+        setCaret(ctl, Number(getCaretPosition(ctl)) + open.length);
       }
     }
   </script>
