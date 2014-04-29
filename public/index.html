@@ -190,6 +190,52 @@
       document.getElementById('medium-editor').innerHTML = result.html;
     }
 
+    // Commands for getting/setting caret position
+    function setSelectionRange(element, start, end) {
+      var rng = document.createRange();
+      var sel = getSelection();
+      var n;
+      var o = 0;
+      var tw = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, null);
+      while (n = tw.nextNode()) {
+        o += n.nodeValue.length;
+        if (o > start) {
+          rng.setStart(n, n.nodeValue.length + start - o);
+          start = Infinity;
+        }
+        if (o >= end) {
+          rng.setEnd(n, n.nodeValue.length + end - o);
+          break;
+        }
+      }
+      sel.removeAllRanges();
+      sel.addRange(rng);
+    }
+
+    function setCaret(element, index) {
+      setSelectionRange(element, index, index);
+    }
+
+    function getCaretPosition(element) {
+      var ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
+      var w3 = (typeof window.getSelection != "undefined") && true;
+      var caretOffset = 0;
+      if (w3) {
+        var range = window.getSelection().getRangeAt(0);
+        var preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(element);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+      } else if (ie) {
+        var textRange = document.selection.createRange();
+        var preCaretTextRange = document.body.createTextRange();
+        preCaretTextRange.moveToElementText(element);
+        preCaretTextRange.setEndPoint("EndToEnd", textRange);
+        caretOffset = preCaretTextRange.text.length;
+      }
+      return caretOffset;
+    }
+
     // static editor buttons commands
     function editableCommand(command, parameter) { 
       editor.execAction(command, parameter);
@@ -212,6 +258,12 @@
         var textNode = document.createTextNode(text);
         range.insertNode(textNode);
         processBBCode();
+
+      // Update caret position
+      var ctl = document.getElementById('bbcode-editor');
+      var startPos = ctl.selectionStart;
+      var endPos = ctl.selectionEnd;
+      setCaret(ctl, Number(getCaretPosition(ctl)) + open.length);
       }
     }
   </script>
