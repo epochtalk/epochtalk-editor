@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>EpochTalk Editor</title>
+  <title>EpochTalk Editor Example</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/medium-editor.css"> <!-- Core -->
   <link rel="stylesheet" href="css/themes/mani.css" id="medium-editor-theme">
@@ -8,7 +8,7 @@
 </head>
 <body>
   <!-- Navigation -->
-  <div class="nav-container clearfix">
+  <div class="ee-nav-container clearfix">
     <div class="pull-right">
       <select name="editor-select" id="editor-select">
         <option value="medium">Medium</option>
@@ -17,13 +17,10 @@
     </div>
   </div>
 
-  <div class="main-container">
+  <div class="ee-main-container">
     <!-- Medium Editor -->
-    <div id="medium-editor-container" class="editor-container">
-      <div class="editor-header-container">
-        <span class="editor-header">Medium</span>
-      </div>
-      <div class="medium-buttons">
+    <div id="medium-editor-container" class="ee-editor-container">
+      <div class="ee-medium-buttons">
         <button onclick="editableCommand('bold');">
           <i class="fa fa-bold"></i>
         </button>
@@ -61,17 +58,14 @@
           <i class="fa fa-list-ol"></i>
         </button>
       </div>
-      <div id="medium-editor" class="editable medium-editor" contenteditable="true" data-placeholder="Type your text" data-medium-element="true">
+      <div id="medium-editor" class="editable ee-medium-editor" contenteditable="true" data-placeholder="Type your text" data-medium-element="true">
         Slow-carb lomo next level, Thundercats banjo High Life Echo Park roof party Intelligentsia gluten-free locavore Shoreditch Portland master cleanse skateboard. Leggings Shoreditch vinyl chambray tote bag, kitsch meggings fixie. Mumblecore deep v Truffaut pour-over Helvetica. Fixie artisan XOXO Pinterest narwhal High Life, single-origin coffee Etsy sartorial distillery bespoke butcher trust fund Pitchfork. Raw denim quinoa pickled, cardigan PBR cred butcher McSweeney's vegan salvia chillwave Helvetica. Schlitz small batch Truffaut you probably haven't heard of them, kogi street art stumptown lomo selvage jean shorts wolf post-ironic. Bushwick messenger bag yr Marfa chia.
       </div>
     </div>
 
     <!-- BBCode Editor -->
-    <div id="bbcode-editor-container" class="editor-container hide-editor">
-      <div class="editor-header-container">
-        <span class="editor-header">BBCode</span>
-      </div>
-      <div class="medium-buttons">
+    <div id="bbcode-editor-container" class="ee-editor-container ee-hide-editor">
+      <div class="ee-medium-buttons">
         <button onmousedown="bbcodeCommand('[b]', '[/b]');">
           <i class="fa fa-bold"></i>
         </button>
@@ -109,12 +103,12 @@
           <i class="fa fa-list-ol"></i>
         </button>
       </div>
-      <div class="split-container">
-        <div class="half-column">
-          <div id="bbcode-editor" class="bbcode-editor" contenteditable="true" onkeyup="processBBCode();"></div>
+      <div class="ee-split-container">
+        <div class="ee-half-column">
+          <div id="bbcode-editor" class="ee-bbcode-editor" contenteditable="true" onkeyup="processBBCode();"></div>
         </div>
-        <div class="half-column">
-          <div id="bbcode-preview" class="bbcode-preview"></div>
+        <div class="ee-half-column">
+          <div id="bbcode-preview" class="ee-bbcode-preview"></div>
         </div>
       </div>
     </div>
@@ -135,25 +129,25 @@
       // switch editor based on value
       if (editorValue === 'bbcode') {
         var bbcodeContainer = document.getElementById('bbcode-editor-container');
-        bbcodeContainer.className += ' show-editor';
+        bbcodeContainer.className += ' ee-show-editor';
         bbcodeContainer.className = 
-          bbcodeContainer.className.replace( /(?:^|\s)hide-editor(?!\S)/g , '' );
+          bbcodeContainer.className.replace( /(?:^|\s)ee-hide-editor(?!\S)/g , '' );
 
         var bbcodeContainer = document.getElementById('medium-editor-container');
-        bbcodeContainer.className += ' hide-editor';
+        bbcodeContainer.className += ' ee-hide-editor';
         bbcodeContainer.className = 
-          bbcodeContainer.className.replace( /(?:^|\s)show-editor(?!\S)/g , '' );
+          bbcodeContainer.className.replace( /(?:^|\s)ee-show-editor(?!\S)/g , '' );
       }
       else {
         var bbcodeContainer = document.getElementById('medium-editor-container');
-        bbcodeContainer.className += ' show-editor';
+        bbcodeContainer.className += ' ee-show-editor';
         bbcodeContainer.className = 
-          bbcodeContainer.className.replace( /(?:^|\s)hide-editor(?!\S)/g , '' );
+          bbcodeContainer.className.replace( /(?:^|\s)ee-hide-editor(?!\S)/g , '' );
 
         var bbcodeContainer = document.getElementById('bbcode-editor-container');
-        bbcodeContainer.className += ' hide-editor';
+        bbcodeContainer.className += ' ee-hide-editor';
         bbcodeContainer.className = 
-          bbcodeContainer.className.replace( /(?:^|\s)show-editor(?!\S)/g , '' );
+          bbcodeContainer.className.replace( /(?:^|\s)ee-show-editor(?!\S)/g , '' );
       }
     });
 
