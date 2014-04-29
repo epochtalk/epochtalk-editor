@@ -39,6 +39,7 @@ body { margin: 0; padding: 0; }
 }
 
 .ee-medium-buttons {
+  margin-top: -10px;
   box-sizing: border-box; 
   padding: 0px 10px 15px 0px;
   height: 40px;
@@ -52,7 +53,7 @@ body { margin: 0; padding: 0; }
 .ee-medium-editor {
   overflow: hidden;
   position: absolute;
-  top: 70;
+  top: 0;
   bottom: 15px;
   left: 20px;
   right: 20px;
@@ -77,6 +78,7 @@ body { margin: 0; padding: 0; }
   box-sizing: border-box;
   padding: 15px;
   border: 1px solid gray;
+  border-left: 0px;
   word-wrap: break-word;
   overflow: auto;
   white-space: pre;
@@ -100,10 +102,18 @@ body { margin: 0; padding: 0; }
 
 .ee-split-container {
   position: absolute;
-  top: 70px;
+  top: 15px;
   bottom: 15px;
   left: 15px;
   right: 15px;
 }
 
 .ee-half-column { width: 50%; float: left; }
+
+.ee-show {
+  display: block;
+}
+
+.ee-hide {
+  display: none;
+}
