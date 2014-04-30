@@ -38,22 +38,22 @@ body { margin: 0; padding: 0; }
   transition: all linear 200ms;
 }
 
-.ee-medium-buttons {
+.ee-buttons {
   margin-top: -10px;
   box-sizing: border-box; 
   padding: 0px 10px 15px 0px;
   height: 40px;
 }
-.ee-medium-buttons > button {
+.ee-buttons > button {
   height: 40px;
   width: 40px;
   font-size: medium;
 }
 
 .ee-medium-editor {
-  overflow: hidden;
+  overflow: auto;
   position: absolute;
-  top: 0;
+  top: 15px;
   bottom: 15px;
   left: 20px;
   right: 20px;
@@ -64,15 +64,19 @@ body { margin: 0; padding: 0; }
 
 .ee-bbcode-editor {
   box-sizing: border-box;
+  overflow: auto;
   border: 1px solid gray;
   padding: 15px;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
   outline: none;
+  white-space: pre;
   height: 100%;
   width: 100%;
+  cursor: default;
 }
+.ee-bbcode-editor p { margin: 0; }
 
 .ee-bbcode-preview {
   box-sizing: border-box;
@@ -101,6 +105,7 @@ body { margin: 0; padding: 0; }
 }
 
 .ee-split-container {
+  overflow: hidden;
   position: absolute;
   top: 15px;
   bottom: 15px;

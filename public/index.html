@@ -6,11 +6,12 @@
   <link rel="stylesheet" href="css/themes/mani.css" id="medium-editor-theme">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 </head>
+
 <body>
   <!-- Navigation -->
   <div class="ee-nav-container clearfix">
     <div class="pull-left">
-      <div id="ee-medium-btn-list" class="ee-medium-buttons">
+      <div class="ee-buttons ee-medium-buttons">
         <button onclick="editableCommand('bold');">
           <i class="fa fa-bold"></i>
         </button>
@@ -48,7 +49,7 @@
           <i class="fa fa-list-ol"></i>
         </button>
       </div>
-      <div id="ee-bbcode-btn-list" class="ee-medium-buttons ee-hide">
+      <div class="ee-buttons ee-bbcode-buttons ee-hide">
         <button onmousedown="bbcodeCommand('[b]', '[/b]');">
           <i class="fa fa-bold"></i>
         </button>
@@ -88,7 +89,7 @@
       </div>
     </div>
     <div class="pull-right">
-      <select name="editor-select" id="editor-select">
+      <select name="editor-select" class="ee-editor-select">
         <option value="medium">Medium</option>
         <option value="bbcode">BBCode</option>
       </select>
@@ -97,73 +98,69 @@
 
   <div class="ee-main-container">
     <!-- Medium Editor -->
-    <div id="medium-editor-container" class="ee-editor-container">
-      <div id="medium-editor" class="editable ee-medium-editor" contenteditable="true" data-placeholder="Type your text" data-medium-element="true">
+    <div class="ee-editor-container ee-medium-container">
+      <div class="editable ee-medium-editor" contenteditable="true" data-medium-element="true">
         Slow-carb lomo next level, Thundercats banjo High Life Echo Park roof party Intelligentsia gluten-free locavore Shoreditch Portland master cleanse skateboard. Leggings Shoreditch vinyl chambray tote bag, kitsch meggings fixie. Mumblecore deep v Truffaut pour-over Helvetica. Fixie artisan XOXO Pinterest narwhal High Life, single-origin coffee Etsy sartorial distillery bespoke butcher trust fund Pitchfork. Raw denim quinoa pickled, cardigan PBR cred butcher McSweeney's vegan salvia chillwave Helvetica. Schlitz small batch Truffaut you probably haven't heard of them, kogi street art stumptown lomo selvage jean shorts wolf post-ironic. Bushwick messenger bag yr Marfa chia.
       </div>
     </div>
 
     <!-- BBCode Editor -->
-    <div id="bbcode-editor-container" class="ee-editor-container ee-hide-editor">
+    <div class="ee-editor-container ee-bbcode-container ee-hide-editor">
       <div class="ee-split-container">
         <div class="ee-half-column">
-          <div id="bbcode-editor" class="ee-bbcode-editor" contenteditable="true" onkeyup="processBBCode();"></div>
+          <div class="ee-bbcode-editor" contenteditable="true" onkeyup="processBBCode(this);"></div>
         </div>
         <div class="ee-half-column">
-          <div id="bbcode-preview" class="ee-bbcode-preview"></div>
+          <div class="ee-bbcode-preview"></div>
         </div>
       </div>
     </div>
   </div>
+
 
   <!-- SCRIPTS!!! -->
   <script src="js/medium-editor.js"></script>
   <script src="js/xbbcode.js"></script>
   <script>
     // editor switcher
-    var editorSelect = document.getElementById('editor-select');
-    editorSelect.addEventListener("change", function() {
-      // get selected option
-      var selectedIndex = editorSelect.options.selectedIndex;
-      var selectedOption = editorSelect.options[selectedIndex];
-      var editorValue = selectedOption.value;
+    var selectArray = document.getElementsByClassName('ee-editor-select');
+    editorSelectArray = [].slice.call(selectArray);
+    editorSelectArray.forEach(function(editorSelect) {
+      editorSelect.addEventListener("change", function() {
+        // get selected option
+        var selectedIndex = editorSelect.options.selectedIndex;
+        var selectedOption = editorSelect.options[selectedIndex];
+        var editorValue = selectedOption.value;
 
-      // Gets div containing each editors buttons
-      var bbcodeBtnList = document.getElementById('ee-bbcode-btn-list');
-      var mediumBtnList = document.getElementById('ee-medium-btn-list');
-      var mediumToolBar = document.getElementById('medium-editor-toolbar-1');
+        // Gets significant elements within the dom
+        var navParent = editorSelect.parentNode.parentNode;
+        var topContainer = navParent.parentNode;
+        var bbcodeBtnList = navParent.getElementsByClassName('ee-bbcode-buttons')[0];
+        var mediumBtnList = navParent.getElementsByClassName('ee-medium-buttons')[0];
 
-      // switch editor based on value
-      if (editorValue === 'bbcode') {
-        mediumBtnList.className='ee-medium-buttons ee-hide';
-        bbcodeBtnList.className='ee-medium-buttons ee-show';
-        mediumToolBar.style.display = 'none';
+        // switch editor based on value
+        if (editorValue === 'bbcode') {
+          mediumBtnList.className = 'ee-buttons ee-medium-buttons ee-hide';
+          bbcodeBtnList.className = 'ee-buttons ee-bbcode-buttons ee-show';
+          editor.hideToolbarActions();
 
-        var bbcodeContainer = document.getElementById('bbcode-editor-container');
-        bbcodeContainer.className += ' ee-show-editor';
-        bbcodeContainer.className = 
-          bbcodeContainer.className.replace( /(?:^|\s)ee-hide-editor(?!\S)/g , '' );
+          var bbcodeContainer = topContainer.getElementsByClassName('ee-bbcode-container')[0];
+          bbcodeContainer.className = 'ee-editor-container ee-bbcode-container ee-show-editor';
 
-        var bbcodeContainer = document.getElementById('medium-editor-container');
-        bbcodeContainer.className += ' ee-hide-editor';
-        bbcodeContainer.className = 
-          bbcodeContainer.className.replace( /(?:^|\s)ee-show-editor(?!\S)/g , '' );
-      }
-      else {
-        bbcodeBtnList.className='ee-medium-buttons ee-hide';
-        mediumBtnList.className='ee-medium-buttons ee-show';
-        mediumToolBar.style.display = 'block';
+          var mediumContainer = topContainer.getElementsByClassName('ee-medium-container')[0];
+          mediumContainer.className = 'ee-editor-container ee-medium-container ee-hide-editor';
+        }
+        else {
+          mediumBtnList.className = 'ee-buttons ee-medium-buttons ee-show';
+          bbcodeBtnList.className = 'ee-buttons ee-bbcode-buttons ee-hide';
 
-        var bbcodeContainer = document.getElementById('medium-editor-container');
-        bbcodeContainer.className += ' ee-show-editor';
-        bbcodeContainer.className = 
-          bbcodeContainer.className.replace( /(?:^|\s)ee-hide-editor(?!\S)/g , '' );
+          var mediumContainer = topContainer.getElementsByClassName('ee-medium-container')[0];
+          mediumContainer.className = 'ee-editor-container ee-medium-container ee-show-editor';
 
-        var bbcodeContainer = document.getElementById('bbcode-editor-container');
-        bbcodeContainer.className += ' ee-hide-editor';
-        bbcodeContainer.className = 
-          bbcodeContainer.className.replace( /(?:^|\s)ee-show-editor(?!\S)/g , '' );
-      }
+          var bbcodeContainer = topContainer.getElementsByClassName('ee-bbcode-container')[0];
+          bbcodeContainer.className = 'ee-editor-container ee-bbcode-container ee-hide-editor';
+        }
+      });
     });
 
     // Medium Editor
@@ -175,94 +172,70 @@
 
     // bind to Medium Editor's input event
     window.addEventListener('load', function() {
-      document.getElementById('medium-editor').addEventListener('input', function() {
-        var text = document.getElementById('medium-editor').innerHTML;
-        document.getElementById('bbcode-preview').innerHTML = text;
-        document.getElementById('bbcode-editor').innerHTML = text;
+      var mediumEditors = document.getElementsByClassName('ee-medium-editor');
+      mediumEditors = [].slice.call(mediumEditors);
+      mediumEditors.forEach(function(mediumEditor) {
+        mediumEditor.addEventListener('input', function() {
+          var text = mediumEditor.innerHTML;
+          var mainContainer = mediumEditor.parentNode.parentNode;
+          var bbcodePreview = mainContainer.getElementsByClassName('ee-bbcode-preview')[0];
+          bbcodePreview.innerHTML = text;
+          var bbcodeEditor = mainContainer.getElementsByClassName('ee-bbcode-editor')[0];
+          bbcodeEditor.innerHTML = text;
+        });
       });
     });
 
     // BBCode Editor
-    function processBBCode() {
-      var code = document.getElementById("bbcode-editor").innerHTML;
+    function processBBCode(element) {
+      var code = element.innerHTML;
       var result = XBBCODE.process({text: code});
-      document.getElementById('bbcode-preview').innerHTML = result.html;
-      document.getElementById('medium-editor').innerHTML = result.html;
-    }
 
-    // Commands for getting/setting caret position
-    function setSelectionRange(element, start, end) {
-      var rng = document.createRange();
-      var sel = getSelection();
-      var n;
-      var o = 0;
-      var tw = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, null);
-      while (n = tw.nextNode()) {
-        o += n.nodeValue.length;
-        if (o > start) {
-          rng.setStart(n, n.nodeValue.length + start - o);
-          start = Infinity;
-        }
-        if (o >= end) {
-          rng.setEnd(n, n.nodeValue.length + end - o);
-          break;
-        }
-      }
-      sel.removeAllRanges();
-      sel.addRange(rng);
-    }
+      // replace text in ee-bbcode-preview
+      var splitContainer = element.parentNode.parentNode; // ee-half-column > ee-split-container
+      var bbcodePreview = splitContainer.getElementsByClassName('ee-bbcode-preview');
+      bbcodePreview[0].innerHTML = result.html;
 
-    function setCaret(element, index) {
-      setSelectionRange(element, index, index);
-    }
-
-    function getCaretPosition(element) {
-      var ie = typeof document.selection != 'undefined' && document.selection.type != 'Control';
-      var w3 = typeof window.getSelection != 'undefined';
-      var caretOffset = 0;
-      if (w3) {
-        var range = window.getSelection().getRangeAt(0);
-        var preCaretRange = range.cloneRange();
-        preCaretRange.selectNodeContents(element);
-        preCaretRange.setEnd(range.endContainer, range.endOffset);
-        caretOffset = preCaretRange.toString().length;
-      } else if (ie) {
-        var textRange = document.selection.createRange();
-        var preCaretTextRange = document.body.createTextRange();
-        preCaretTextRange.moveToElementText(element);
-        preCaretTextRange.setEndPoint("EndToEnd", textRange);
-        caretOffset = preCaretTextRange.text.length;
-      }
-      return caretOffset;
+      // replace text in medium editor
+      // bbcode-editor-container > main-container
+      var mainContainer = splitContainer.parentNode.parentNode; 
+      var mediumEditor = mainContainer.getElementsByClassName('ee-medium-editor');
+      mediumEditor[0].innerHTML = result.html;
     }
 
     // static editor buttons commands
     function editableCommand(command, parameter) { 
-      editor.execAction(command, parameter);
+      editor.execAction(command, parameter); 
     }
 
     function bbcodeCommand(open, close) {
+     if (document.activeElement.className !== 'ee-bbcode-editor') { return; }
+
       // get selection
       var text, selection;
       if (document.selection) { selection = document.selection.createRange().text; }
       else { selection = window.getSelection(); }
 
-      // prepend
+      // prepend and append tags
       text = selection.toString();
-      text = open + text + close;
+      var taggedText = open + text + close;
 
       // append text
-      var ctl = document.getElementById('bbcode-editor');
       if (selection.rangeCount) {
         range = selection.getRangeAt(0);
         range.deleteContents();
-        var textNode = document.createTextNode(text);
+        var textNode = document.createTextNode(taggedText);
         range.insertNode(textNode);
-        processBBCode();
 
-        // Update caret position
-        ctl = document.getElementById('bbcode-editor');
-        setCaret(ctl, Number(getCaretPosition(ctl)) + open.length);
+        // set cursor
+        var selRange = document.createRange();
+        selRange.setStart(textNode, open.length + text.length);
+        selRange.setEnd(textNode, open.length + text.length);
+        selection.removeAllRanges();
+        // hack to get the cursor to show up in chrome
+        setTimeout(function() {
+          selection.addRange(selRange);
+        }, 1);
       }
     }
   </script>
