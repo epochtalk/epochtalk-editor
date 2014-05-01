@@ -8,7 +8,13 @@
 </head>
 
 <body>
-  <!-- Navigation -->
+  <div id="editor-1" style="height: 300px; width: 100%" data-epochtalk-editor></div>
+
+  <div id="editor-2" style="height: 300px; width: 100%" data-epochtalk-editor></div>
+  
+
+  <!--
+  <div style="height: 400px; width: 100%; margin-top: 100px;">
   <div class="ee-nav-container clearfix">
     <div class="pull-left">
       <div class="ee-buttons ee-medium-buttons">
@@ -97,14 +103,10 @@
   </div>
 
   <div class="ee-main-container">
-    <!-- Medium Editor -->
     <div class="ee-editor-container ee-medium-container">
-      <div class="editable ee-medium-editor" contenteditable="true" data-medium-element="true">
-        Slow-carb lomo next level, Thundercats banjo High Life Echo Park roof party Intelligentsia gluten-free locavore Shoreditch Portland master cleanse skateboard. Leggings Shoreditch vinyl chambray tote bag, kitsch meggings fixie. Mumblecore deep v Truffaut pour-over Helvetica. Fixie artisan XOXO Pinterest narwhal High Life, single-origin coffee Etsy sartorial distillery bespoke butcher trust fund Pitchfork. Raw denim quinoa pickled, cardigan PBR cred butcher McSweeney's vegan salvia chillwave Helvetica. Schlitz small batch Truffaut you probably haven't heard of them, kogi street art stumptown lomo selvage jean shorts wolf post-ironic. Bushwick messenger bag yr Marfa chia.
-      </div>
+      <div class="editable ee-medium-editor" contenteditable="true" data-medium-element="true"></div>
     </div>
 
-    <!-- BBCode Editor -->
     <div class="ee-editor-container ee-bbcode-container ee-hide-editor">
       <div class="ee-split-container">
         <div class="ee-half-column">
@@ -116,62 +118,76 @@
       </div>
     </div>
   </div>
-
+  </div>
+  -->
 
   <!-- SCRIPTS!!! -->
   <script src="js/medium-editor.js"></script>
   <script src="js/xbbcode.js"></script>
   <script>
-    // editor switcher
-    var selectArray = document.getElementsByClassName('ee-editor-select');
-    editorSelectArray = [].slice.call(selectArray);
-    editorSelectArray.forEach(function(editorSelect) {
-      editorSelect.addEventListener("change", function() {
-        // get selected option
-        var selectedIndex = editorSelect.options.selectedIndex;
-        var selectedOption = editorSelect.options[selectedIndex];
-        var editorValue = selectedOption.value;
+    // on load
+    window.addEventListener('load', function() {
+      // build editor html
+      var html = '<div class="ee-nav-container clearfix"><div class="pull-left"><div class="ee-buttons ee-medium-buttons"><button onclick="editableCommand(\'bold\');"><i class="fa fa-bold"></i></button><button onclick="editableCommand(\'italic\');"><i class="fa fa-italic"></i></button><button onclick="editableCommand(\'underline\');"><i class="fa fa-underline"></i></button><button onclick="editableCommand(\'anchor\');"><i class="fa fa-link"></i></button><button onclick="editableCommand(\'append-h3\');"><b>H1</b></button><button onclick="editableCommand(\'append-h4\');"><b>H2</b></button><button onclick="editableCommand(\'append-blockquote\');"><i class="fa fa-quote-right"></i></button><button onclick="editableCommand(\'subscript\');"><i class="fa fa-subscript"></i></button><button onclick="editableCommand(\'superscript\');"><i class="fa fa-superscript"></i></button><button onclick="editableCommand(\'strikethrough\');"><strike>A</strike></button><button onclick="editableCommand(\'insertunorderedlist\');"><i class="fa fa-list-ul"></i></button><button onclick="editableCommand(\'insertorderedlist\');"><i class="fa fa-list-ol"></i></button></div><div class="ee-buttons ee-bbcode-buttons ee-hide"><button onmousedown="bbcodeCommand(\'[b]\', \'[/b]\');"><i class="fa fa-bold"></i></button><button onmousedown="bbcodeCommand(\'[i]\', \'[/i]\');"><i class="fa fa-italic"></i></button><button onmousedown="bbcodeCommand(\'[u]\', \'[/u]\');"><i class="fa fa-underline"></i></button><button onmousedown="bbcodeCommand(\'[url]\', \'[/url]\');"><i class="fa fa-link"></i></button><button onmousedown="bbcodeCommand(\'[size=20pt]\', \'[/size]\');"><b>H1</b></button><button onmousedown="bbcodeCommand(\'[size=15pt]\', \'[/size]\');"><b>H2</b></button><button onmousedown="bbcodeCommand(\'[quote]\', \'[/quote]\');"><i class="fa fa-quote-right"></i></button><button onmousedown="bbcodeCommand(\'[sub]\', \'[/sub]\');"><i class="fa fa-subscript"></i></button><button onmousedown="bbcodeCommand(\'[sup]\', \'[/sup]\');"><i class="fa fa-superscript"></i></button><button onmousedown="bbcodeCommand(\'[s]\', \'[/s]\');"><strike>A</strike></button><button onmousedown="bbcodeCommand(\'[ul]\', \'[/ul]\');"><i class="fa fa-list-ul"></i></button><button onmousedown="bbcodeCommand(\'[ol]\', \'[/ol]\');"><i class="fa fa-list-ol"></i></button></div></div><div class="pull-right"><select name="editor-select" class="ee-editor-select"><option value="medium">Medium</option><option value="bbcode">BBCode</option></select></div></div><div class="ee-main-container"><div class="ee-editor-container ee-medium-container"><div class="editable ee-medium-editor" contenteditable="true" data-medium-element="true"></div></div><div class="ee-editor-container ee-bbcode-container ee-hide-editor"><div class="ee-split-container"><div class="ee-half-column"><div class="ee-bbcode-editor" contenteditable="true" onkeyup="processBBCode(this);"></div></div><div class="ee-half-column"><div class="ee-bbcode-preview"></div></div></div></div></div>';
 
-        // Gets significant elements within the dom
-        var navParent = editorSelect.parentNode.parentNode;
-        var topContainer = navParent.parentNode;
-        var bbcodeBtnList = navParent.getElementsByClassName('ee-bbcode-buttons')[0];
-        var mediumBtnList = navParent.getElementsByClassName('ee-medium-buttons')[0];
-
-        // switch editor based on value
-        if (editorValue === 'bbcode') {
-          mediumBtnList.className = 'ee-buttons ee-medium-buttons ee-hide';
-          bbcodeBtnList.className = 'ee-buttons ee-bbcode-buttons ee-show';
-          editor.hideToolbarActions();
-
-          var bbcodeContainer = topContainer.getElementsByClassName('ee-bbcode-container')[0];
-          bbcodeContainer.className = 'ee-editor-container ee-bbcode-container ee-show-editor';
-
-          var mediumContainer = topContainer.getElementsByClassName('ee-medium-container')[0];
-          mediumContainer.className = 'ee-editor-container ee-medium-container ee-hide-editor';
-        }
-        else {
-          mediumBtnList.className = 'ee-buttons ee-medium-buttons ee-show';
-          bbcodeBtnList.className = 'ee-buttons ee-bbcode-buttons ee-hide';
-
-          var mediumContainer = topContainer.getElementsByClassName('ee-medium-container')[0];
-          mediumContainer.className = 'ee-editor-container ee-medium-container ee-show-editor';
-
-          var bbcodeContainer = topContainer.getElementsByClassName('ee-bbcode-container')[0];
-          bbcodeContainer.className = 'ee-editor-container ee-bbcode-container ee-hide-editor';
+      // add html to designated divs
+      var editorsElementsArray = document.querySelectorAll('[data-epochtalk-editor]');
+      editorsElementsArray = [].slice.call(editorsElementsArray);
+      editorsElementsArray.forEach(function(editorElement) {
+        if (editorElement.tagName === 'DIV') {
+          editorElement.innerHTML = html;
         }
       });
-    });
+      
+      // intialize Medium Editor
+      var editor = new MediumEditor('.editable', {
+          buttonLabels: 'fontawesome',
+          buttons: ['bold', 'italic', 'underline', 'anchor', 'header1', 'header2', 'quote', 'superscript', 'subscript', 'strikethrough', 'unorderedlist', 'orderedlist'],
+          targetBlank: true
+      });
+      
+      // editor switching initialization
+      var selectArray = document.getElementsByClassName('ee-editor-select');
+      editorSelectArray = [].slice.call(selectArray);
+      editorSelectArray.forEach(function(editorSelect) {
+        editorSelect.addEventListener("change", function() {
+          // get selected option
+          var selectedIndex = editorSelect.options.selectedIndex;
+          var selectedOption = editorSelect.options[selectedIndex];
+          var editorValue = selectedOption.value;
 
-    // Medium Editor
-    var editor = new MediumEditor('.editable', {
-        buttonLabels: 'fontawesome',
-        buttons: ['bold', 'italic', 'underline', 'anchor', 'header1', 'header2', 'quote', 'superscript', 'subscript', 'strikethrough', 'unorderedlist', 'orderedlist'],
-        targetBlank: true
-    });
+          // Gets significant elements within the dom
+          var navParent = editorSelect.parentNode.parentNode;
+          var topContainer = navParent.parentNode;
+          var bbcodeBtnList = navParent.getElementsByClassName('ee-bbcode-buttons')[0];
+          var mediumBtnList = navParent.getElementsByClassName('ee-medium-buttons')[0];
 
-    // bind to Medium Editor's input event
-    window.addEventListener('load', function() {
+          // switch editor based on value
+          if (editorValue === 'bbcode') {
+            mediumBtnList.className = 'ee-buttons ee-medium-buttons ee-hide';
+            bbcodeBtnList.className = 'ee-buttons ee-bbcode-buttons ee-show';
+            editor.hideToolbarActions();
+
+            var bbcodeContainer = topContainer.getElementsByClassName('ee-bbcode-container')[0];
+            bbcodeContainer.className = 'ee-editor-container ee-bbcode-container ee-show-editor';
+
+            var mediumContainer = topContainer.getElementsByClassName('ee-medium-container')[0];
+            mediumContainer.className = 'ee-editor-container ee-medium-container ee-hide-editor';
+          }
+          else {
+            mediumBtnList.className = 'ee-buttons ee-medium-buttons ee-show';
+            bbcodeBtnList.className = 'ee-buttons ee-bbcode-buttons ee-hide';
+
+            var mediumContainer = topContainer.getElementsByClassName('ee-medium-container')[0];
+            mediumContainer.className = 'ee-editor-container ee-medium-container ee-show-editor';
+
+            var bbcodeContainer = topContainer.getElementsByClassName('ee-bbcode-container')[0];
+            bbcodeContainer.className = 'ee-editor-container ee-bbcode-container ee-hide-editor';
+          }
+        });
+      });
+
+      // bind to Medium Editor's input event
       var mediumEditors = document.getElementsByClassName('ee-medium-editor');
       mediumEditors = [].slice.call(mediumEditors);
       mediumEditors.forEach(function(mediumEditor) {
