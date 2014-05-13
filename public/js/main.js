@@ -9,12 +9,11 @@ angular.module('myApp', [
 angular.module('editorControllers', [])
   .controller('editorCtrl', ['$scope', function($scope) {
     $scope.quote = "quotedData";
-    $scope.editorText = "test";
+    // test code
+    $scope.editorText = '';
 
     $scope.save = function(text) {
       $scope.editorText = text;
-      // console.log("Controller Text: ");
-      // console.log($scope.editorText);
     };
 
   }]);
@@ -40,8 +39,6 @@ angular.module('editorDirectives', [])
           if (document.selection) { selection = document.selection.createRange().text; }
           else { selection = window.getSelection(); }
 
-          console.log(selection);
-
           // prepend and append tags
           text = selection.toString();
           var taggedText = open + text + close;
@@ -66,7 +63,7 @@ angular.module('editorDirectives', [])
         };
       },
       link: function(scope, element, attrs) {
-        // directive element
+        // Find relevant HTML Elements
         var htmlElement = element[0];
         // bbcode editor element
         var bbcodeElement = htmlElement.getElementsByClassName('ee-bbcode-editor')[0];
@@ -76,7 +73,8 @@ angular.module('editorDirectives', [])
         previewElement = angular.element(previewElement);
 
         // on load ng-model text to editor and preview
-        bbcodeElement.html(scope.text);
+        var bbcode = convert(scope.text);
+        bbcodeElement.text(bbcode);
         previewElement.html(scope.text);
 
         // bind changes to the div to the preview and the parent controller

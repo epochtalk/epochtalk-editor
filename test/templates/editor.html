@@ -1,0 +1,55 @@
+<div class="ee-nav-container clearfix">
+  <div class="pull-left">
+    <div class="ee-buttons">
+      <button ng-mousedown="bbcodeCommand('[b]', '[/b]');">
+        <i class="fa fa-bold"></i>
+      </button>
+      <button ng-mousedown="bbcodeCommand('[i]', '[/i]');">
+        <i class="fa fa-italic"></i>
+      </button>
+      <button ng-mousedown="bbcodeCommand('[u]', '[/u]');">
+        <i class="fa fa-underline"></i>
+      </button>
+      <button ng-mousedown="bbcodeCommand('[url]', '[/url]');">
+        <i class="fa fa-link"></i>
+      </button>
+      <button ng-mousedown="bbcodeCommand('[size=20pt]', '[/size]');">
+        <b>H1</b>
+      </button>
+      <button ng-mousedown="bbcodeCommand('[size=15pt]', '[/size]');">
+        <b>H2</b>
+      </button>
+      <button ng-mousedown="bbcodeCommand('[quote]', '[/quote]');">
+        <i class="fa fa-quote-right"></i>
+      </button>
+      <button ng-mousedown="bbcodeCommand('[sub]', '[/sub]');">
+        <i class="fa fa-subscript"></i>
+      </button>
+      <button ng-mousedown="bbcodeCommand('[sup]', '[/sup]');">
+        <i class="fa fa-superscript"></i>
+      </button>
+      <button ng-mousedown="bbcodeCommand('[s]', '[/s]');">
+        <strike>A</strike>
+      </button>
+      <button ng-mousedown="bbcodeCommand('[ul]', '[/ul]');">
+        <i class="fa fa-list-ul"></i>
+      </button>
+      <button ng-mousedown="bbcodeCommand('[ol]', '[/ol]');">
+        <i class="fa fa-list-ol"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="ee-main-container">
+  <div class="ee-editor-container">
+    <div class="ee-split-container">
+      <div class="ee-half-column">
+        <div class="ee-bbcode-editor" contenteditable="true"></div>
+      </div>
+      <div class="ee-half-column">
+        <div class="ee-bbcode-preview"></div>
+      </div>
+    </div>
+  </div>
+</div>
