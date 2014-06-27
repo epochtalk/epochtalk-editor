@@ -361,184 +361,186 @@ function handleUnderline(justText) {
   return justText;
 }
 
-function convert(bbcodetext) {
-  // handle left/right/center justification
-  bbcodetext = handleJustification(bbcodetext);
-  bbcodetext = handleFontColor(bbcodetext);
-  bbcodetext = handleFontFace(bbcodetext);
-  bbcodetext = handleFontSize(bbcodetext);
-  bbcodetext = handleTextDirection(bbcodetext);
-  bbcodetext = handleUnderline(bbcodetext);
+module.exports = {
+  convert: function convert(bbcodetext) {
+    // handle left/right/center justification
+    bbcodetext = handleJustification(bbcodetext);
+    bbcodetext = handleFontColor(bbcodetext);
+    bbcodetext = handleFontFace(bbcodetext);
+    bbcodetext = handleFontSize(bbcodetext);
+    bbcodetext = handleTextDirection(bbcodetext);
+    bbcodetext = handleUnderline(bbcodetext);
 
-  // handle code/pre/textarea/script to not format html -> bbcode
-  bbcodetext = bbcodetext.replace(/<CODE>/gi, "<TEXTAREA>");
-  bbcodetext = bbcodetext.replace(/<\/CODE>/gi, "</TEXTAREA>");
-  bbcodetext = bbcodetext.replace(/<PRE[^>]*>/gi, "<TEXTAREA>");
-  bbcodetext = bbcodetext.replace(/<\/PRE>/gi, "</TEXTAREA>");
-  bbcodetext = bbcodetext.replace(/<PRE>/gi, "<TEXTAREA>");
-  bbcodetext = bbcodetext.replace(/<\/PRE>/gi, "</TEXTAREA>");
-  bbcodetext = bbcodetext.replace(/<SCRIPT[^>]*>/gi, "<TEXTAREA>");
-  bbcodetext = bbcodetext.replace(/<\/SCRIPT>/gi, "</TEXTAREA>");
-  do_textarea(bbcodetext);
+    // handle code/pre/textarea/script to not format html -> bbcode
+    bbcodetext = bbcodetext.replace(/<CODE>/gi, "<TEXTAREA>");
+    bbcodetext = bbcodetext.replace(/<\/CODE>/gi, "</TEXTAREA>");
+    bbcodetext = bbcodetext.replace(/<PRE[^>]*>/gi, "<TEXTAREA>");
+    bbcodetext = bbcodetext.replace(/<\/PRE>/gi, "</TEXTAREA>");
+    bbcodetext = bbcodetext.replace(/<PRE>/gi, "<TEXTAREA>");
+    bbcodetext = bbcodetext.replace(/<\/PRE>/gi, "</TEXTAREA>");
+    bbcodetext = bbcodetext.replace(/<SCRIPT[^>]*>/gi, "<TEXTAREA>");
+    bbcodetext = bbcodetext.replace(/<\/SCRIPT>/gi, "</TEXTAREA>");
+    do_textarea(bbcodetext);
 
-  // custom BBCode
-  bbcodetext = bbcodetext.replace(/<SPAN CLASS="BTC">BTC<\/SPAN>/gi, "[btc]");
-  
-  // remove spaces around the = 
-  bbcodetext = bbcodetext.replace(/ = /gi, "=");
-
-  bbcodetext = bbcodetext.replace(/\s+BORDER=[^\'\">]*[\'\">]/gi, "");
-  // bbcodetext = bbcodetext.replace(/\s+TARGET=[^\'\">]*[\'\">]/gi, "");
-  bbcodetext = bbcodetext.replace(/\s+CLASSID=[^\'\">]*[\'\">]/gi, "");
-  bbcodetext = bbcodetext.replace(/\s+ID=[^\'\">]*[\'\">]/gi, "");
-  bbcodetext = bbcodetext.replace(/\s+NAME=[^\'\">]*[\'\">]/gi, "");
-  //bbcodetext = bbcodetext.replace(/\s+ALIGN=[^\"]*\"/gi, "");
-  //bbcodetext = bbcodetext.replace(/\s+ALIGN=[^\']*\'/gi, "");
-  //bbcodetext = bbcodetext.replace(/\s+ALIGN=[^>]*>/gi, ">");
-  //bbcodetext = bbcodetext.replace(/\s+STYLE=[^\'\">]*[\'\">]/gi, "");
-  //bbcodetext = bbcodetext.replace(/\s+STYLE=[^\'>]*\'/gi, "");
-  //bbcodetext = bbcodetext.replace(/\s+CLASS=[^\'\">]*[\'\">]/gi, "");
-  //bbcodetext = bbcodetext.replace(/\s+CLASS=[^\'>]*\'/gi, "");
-  bbcodetext = bbcodetext.replace(/\s+ALT=[^\'\">]*[\'\">]/gi, "");
-  bbcodetext = bbcodetext.replace(/\s+TITLE=[^\'\">]*[\'\">]/gi, "");
-  bbcodetext = bbcodetext.replace(/\s+REL=[^\'\">]*[\'\">]/gi, "");
-  bbcodetext = bbcodetext.replace(/\s+ONCLICK=[^\'\">]*[\'\">]/gi, "");
-  /* 10-5-11 - Above I replaced: .replace(/ BORDER 
-    with: .replace(/\s*BORDER
-    to replace by all whitespace including new line
-  */
-  //(\"[^\"]*\"|\'[^\']*\'|\w[^>\'\"\s]*) from strip.php
-  
-  // 10-5-11 - Replace all <A whitespace HREF with just a space so our functions below work
-  bbcodetext = bbcodetext.replace(/<A\s*HREF/gi, "<A HREF");
-  do_anchor(bbcodetext);
-  
-  bbcodetext = bbcodetext.replace(/<BR>/gi, "[br]");
-  bbcodetext = bbcodetext.replace(/<BR(.*?)\/>/gi, "[br]");
-  bbcodetext = bbcodetext.replace(/<P>/gi, "\r\r");
-  bbcodetext = bbcodetext.replace(/<P [^>]*>/gi, "\r\r");
-  bbcodetext = bbcodetext.replace(/<BLOCKQUOTE>/gi, "[quote]");
-  bbcodetext = bbcodetext.replace(/<\/BLOCKQUOTE>/gi, "[/quote]");
-  bbcodetext = bbcodetext.replace(/<UL[^>]*>/gi, "[ul]");
-  bbcodetext = bbcodetext.replace(/<\/UL>/gi, "[/ul]");
-  bbcodetext = bbcodetext.replace(/<OL[^>]*>/gi, "[ol]");
-  bbcodetext = bbcodetext.replace(/<\/OL>/gi, "[/ol]");
-  bbcodetext = bbcodetext.replace(/<LI>/gi, "[*]");
-
-  // *** how are we handling images?
-
-  // *** Jeff!! These two remarked statements are the solution
-  // to make a better converter:
-  // (.*?) = match any character except new line 0 or more times and remember the match
-  // ([\s\S]*?) = match \s any white space char once inclduing \n, 
-  // \S match any non-white space char, *? any number of times or 0 times
-  //bbcodetext = bbcodetext.replace(/<A[\s\S]*?HREF=\"(.*?)\"[\s\S]*?>([\s\S]*?)<\/A>/gi, "[url=$1]$2[\/url]");
-  bbcodetext = bbcodetext.replace(/<IMG[\s\S]*?SRC=([\s\S]*?)\"[\s\S]*?>/gi, "[img]$1[\/img]");
-  bbcodetext = bbcodetext.replace(/<IMG[\s\S]*?SRC=([\s\S]*?)'[\s\S]*?>/gi, "[img]$1[\/img]");
-  
-  bbcodetext = bbcodetext.replace(/<BIG>/gi, "[b]");
-  bbcodetext = bbcodetext.replace(/<\/BIG>/gi, "[/b]");
-  bbcodetext = bbcodetext.replace(/<STRONG>/gi, "[b]");
-  bbcodetext = bbcodetext.replace(/<\/STRONG>/gi, "[/b]");
-  bbcodetext = bbcodetext.replace(/<B>/gi, "[b]");
-  bbcodetext = bbcodetext.replace(/<\/B>/gi, "[/b]");
-  bbcodetext = bbcodetext.replace(/<U>/gi, "[u]");
-  bbcodetext = bbcodetext.replace(/<\/U>/gi, "[/u]");
-  bbcodetext = bbcodetext.replace(/<I>/gi, "[i]");
-  bbcodetext = bbcodetext.replace(/<\/I>/gi, "[/i]");
-  bbcodetext = bbcodetext.replace(/<EM>/gi, "[i]");
-  bbcodetext = bbcodetext.replace(/<\/EM>/gi, "[/i]");
-  bbcodetext = bbcodetext.replace(/<h\d>/gi, "\r\r[b]");
-  bbcodetext = bbcodetext.replace(/<\/h\d>/gi, "[/b]");
-  bbcodetext = bbcodetext.replace(/&nbsp;/gi, " ");
-  bbcodetext = bbcodetext.replace(/<SUP>/gi, "[sup]");
-  bbcodetext = bbcodetext.replace(/<\/SUP>/gi, "[/sup]");
-  bbcodetext = bbcodetext.replace(/<SUB>/gi, "[sub]");
-  bbcodetext = bbcodetext.replace(/<\/SUB>/gi, "[/sub]");
-  bbcodetext = bbcodetext.replace(/<HR[^>]*>/gi, "[hr]");
-  bbcodetext = bbcodetext.replace(/<DEL>/gi, "[s]");
-  bbcodetext = bbcodetext.replace(/<\/DEL>/gi, "[/s]");
-  bbcodetext = bbcodetext.replace(/<STRIKE>/gi, "[s]");
-  bbcodetext = bbcodetext.replace(/<\/STRIKE>/gi, "[/s]");
-  bbcodetext = bbcodetext.replace(/<TEXTAREA[^>]*>/gi, "[code]");
-  bbcodetext = bbcodetext.replace(/<\/TEXTAREA>/gi, "[/code]");
-  bbcodetext = bbcodetext.replace(/<THEAD[^>]*>/gi, "[thead]");
-  bbcodetext = bbcodetext.replace(/<\/THEAD>/gi, "[/thead]");
-  bbcodetext = bbcodetext.replace(/<TABLE[^>]*>/gi, "[table]");
-  bbcodetext = bbcodetext.replace(/<TR[^>]*>/gi, "[tr]");
-  bbcodetext = bbcodetext.replace(/<TD[^>]*>/gi, "[td]");
-  bbcodetext = bbcodetext.replace(/<TH[^>]*>/gi, "[th]");
-  bbcodetext = bbcodetext.replace(/<\/TABLE>/gi, "[/table]");
-  bbcodetext = bbcodetext.replace(/<\/TR>/gi, "[/tr]");
-  bbcodetext = bbcodetext.replace(/<\/TD>/gi, "[/td]");
-  bbcodetext = bbcodetext.replace(/<\/TH>/gi, "[/th]");
-  bbcodetext = bbcodetext.replace(/<TBODY[^>]*>/gi, "[tbody]");
-  bbcodetext = bbcodetext.replace(/<\/TBODY>/gi, "[/tbody]");
-  bbcodetext = bbcodetext.replace(/<TFOOT[^>]*>/gi, "[tfoot]");
-  bbcodetext = bbcodetext.replace(/<\/TFOOT>/gi, "[/tfoot]");
-  bbcodetext = bbcodetext.replace(/<TT>/gi, "[tt]");
-  bbcodetext = bbcodetext.replace(/<\/TT>/gi, "[/tt]");
+    // custom BBCode
+    bbcodetext = bbcodetext.replace(/<SPAN CLASS="BTC">BTC<\/SPAN>/gi, "[btc]");
     
-  // The following for loop is to search anchor tags
-  // to have the right closing for mailto or http.
-  // It also does </A> tags
-  // we remove the global case in the replace function
-  for (i = 0; anchorlist[i].pos !== 0; i++) {
-    if (anchorlist[i].pos == 4) {  // if iurl
-      var startIURL = bbcodetext.indexOf("<A HREF=", 0);
-      var endIURL = bbcodetext.indexOf(">", startIURL);
+    // remove spaces around the = 
+    bbcodetext = bbcodetext.replace(/ = /gi, "=");
 
-      if (startIURL > -1 && endIURL > -1) {
-        var iurl = anchorlist[i].face;
-        bbcodetext = [bbcodetext.slice(0, startIURL), "[iurl=", iurl, "]", bbcodetext.slice(endIURL+1)].join('');
-        bbcodetext = bbcodetext.replace(/<\/A>/i, "[/iurl]");
-      }
-    }
-    if (anchorlist[i].pos == 3) {  // if FTP
-      var startFTP = bbcodetext.indexOf("<A HREF=", 0);
-      var endFTP = bbcodetext.indexOf(">", startFTP);
+    bbcodetext = bbcodetext.replace(/\s+BORDER=[^\'\">]*[\'\">]/gi, "");
+    // bbcodetext = bbcodetext.replace(/\s+TARGET=[^\'\">]*[\'\">]/gi, "");
+    bbcodetext = bbcodetext.replace(/\s+CLASSID=[^\'\">]*[\'\">]/gi, "");
+    bbcodetext = bbcodetext.replace(/\s+ID=[^\'\">]*[\'\">]/gi, "");
+    bbcodetext = bbcodetext.replace(/\s+NAME=[^\'\">]*[\'\">]/gi, "");
+    //bbcodetext = bbcodetext.replace(/\s+ALIGN=[^\"]*\"/gi, "");
+    //bbcodetext = bbcodetext.replace(/\s+ALIGN=[^\']*\'/gi, "");
+    //bbcodetext = bbcodetext.replace(/\s+ALIGN=[^>]*>/gi, ">");
+    //bbcodetext = bbcodetext.replace(/\s+STYLE=[^\'\">]*[\'\">]/gi, "");
+    //bbcodetext = bbcodetext.replace(/\s+STYLE=[^\'>]*\'/gi, "");
+    //bbcodetext = bbcodetext.replace(/\s+CLASS=[^\'\">]*[\'\">]/gi, "");
+    //bbcodetext = bbcodetext.replace(/\s+CLASS=[^\'>]*\'/gi, "");
+    bbcodetext = bbcodetext.replace(/\s+ALT=[^\'\">]*[\'\">]/gi, "");
+    bbcodetext = bbcodetext.replace(/\s+TITLE=[^\'\">]*[\'\">]/gi, "");
+    bbcodetext = bbcodetext.replace(/\s+REL=[^\'\">]*[\'\">]/gi, "");
+    bbcodetext = bbcodetext.replace(/\s+ONCLICK=[^\'\">]*[\'\">]/gi, "");
+    /* 10-5-11 - Above I replaced: .replace(/ BORDER 
+      with: .replace(/\s*BORDER
+      to replace by all whitespace including new line
+    */
+    //(\"[^\"]*\"|\'[^\']*\'|\w[^>\'\"\s]*) from strip.php
+    
+    // 10-5-11 - Replace all <A whitespace HREF with just a space so our functions below work
+    bbcodetext = bbcodetext.replace(/<A\s*HREF/gi, "<A HREF");
+    do_anchor(bbcodetext);
+    
+    bbcodetext = bbcodetext.replace(/<BR>/gi, "[br]");
+    bbcodetext = bbcodetext.replace(/<BR(.*?)\/>/gi, "[br]");
+    bbcodetext = bbcodetext.replace(/<P>/gi, "\r\r");
+    bbcodetext = bbcodetext.replace(/<P [^>]*>/gi, "\r\r");
+    bbcodetext = bbcodetext.replace(/<BLOCKQUOTE>/gi, "[quote]");
+    bbcodetext = bbcodetext.replace(/<\/BLOCKQUOTE>/gi, "[/quote]");
+    bbcodetext = bbcodetext.replace(/<UL[^>]*>/gi, "[ul]");
+    bbcodetext = bbcodetext.replace(/<\/UL>/gi, "[/ul]");
+    bbcodetext = bbcodetext.replace(/<OL[^>]*>/gi, "[ol]");
+    bbcodetext = bbcodetext.replace(/<\/OL>/gi, "[/ol]");
+    bbcodetext = bbcodetext.replace(/<LI>/gi, "[*]");
 
-      if (startFTP > -1 && endFTP > -1) {
-        var ftp = anchorlist[i].face;
-        bbcodetext = [bbcodetext.slice(0, startFTP), "[ftp=ftp:", ftp, "]", bbcodetext.slice(endFTP+1)].join('');
-        bbcodetext = bbcodetext.replace(/<\/A>/i, "[/ftp]");
-      }
-    }
-    if (anchorlist[i].pos == 2) { // if URL
-      var startURL = bbcodetext.indexOf("<A HREF=", 0);
-      var endURL = bbcodetext.indexOf(">", startURL);
+    // *** how are we handling images?
 
-      if (startURL > -1 && endURL > -1) {
-        var url = anchorlist[i].face;
-        bbcodetext = [bbcodetext.slice(0, startURL), "[url=", url, "]", bbcodetext.slice(endURL+1)].join('');
-        bbcodetext = bbcodetext.replace(/<\/A>/i, "[/url]");
-      }
-    }  // end if URL
-    if (anchorlist[i].pos == 1) { // if mailto:
-      var startEmail = bbcodetext.indexOf("<A HREF=", 0);
-      var endEmail = bbcodetext.indexOf(">", startEmail);
+    // *** Jeff!! These two remarked statements are the solution
+    // to make a better converter:
+    // (.*?) = match any character except new line 0 or more times and remember the match
+    // ([\s\S]*?) = match \s any white space char once inclduing \n, 
+    // \S match any non-white space char, *? any number of times or 0 times
+    //bbcodetext = bbcodetext.replace(/<A[\s\S]*?HREF=\"(.*?)\"[\s\S]*?>([\s\S]*?)<\/A>/gi, "[url=$1]$2[\/url]");
+    bbcodetext = bbcodetext.replace(/<IMG[\s\S]*?SRC=([\s\S]*?)\"[\s\S]*?>/gi, "[img]$1[\/img]");
+    bbcodetext = bbcodetext.replace(/<IMG[\s\S]*?SRC=([\s\S]*?)'[\s\S]*?>/gi, "[img]$1[\/img]");
+    
+    bbcodetext = bbcodetext.replace(/<BIG>/gi, "[b]");
+    bbcodetext = bbcodetext.replace(/<\/BIG>/gi, "[/b]");
+    bbcodetext = bbcodetext.replace(/<STRONG>/gi, "[b]");
+    bbcodetext = bbcodetext.replace(/<\/STRONG>/gi, "[/b]");
+    bbcodetext = bbcodetext.replace(/<B>/gi, "[b]");
+    bbcodetext = bbcodetext.replace(/<\/B>/gi, "[/b]");
+    bbcodetext = bbcodetext.replace(/<U>/gi, "[u]");
+    bbcodetext = bbcodetext.replace(/<\/U>/gi, "[/u]");
+    bbcodetext = bbcodetext.replace(/<I>/gi, "[i]");
+    bbcodetext = bbcodetext.replace(/<\/I>/gi, "[/i]");
+    bbcodetext = bbcodetext.replace(/<EM>/gi, "[i]");
+    bbcodetext = bbcodetext.replace(/<\/EM>/gi, "[/i]");
+    bbcodetext = bbcodetext.replace(/<h\d>/gi, "\r\r[b]");
+    bbcodetext = bbcodetext.replace(/<\/h\d>/gi, "[/b]");
+    bbcodetext = bbcodetext.replace(/&nbsp;/gi, " ");
+    bbcodetext = bbcodetext.replace(/<SUP>/gi, "[sup]");
+    bbcodetext = bbcodetext.replace(/<\/SUP>/gi, "[/sup]");
+    bbcodetext = bbcodetext.replace(/<SUB>/gi, "[sub]");
+    bbcodetext = bbcodetext.replace(/<\/SUB>/gi, "[/sub]");
+    bbcodetext = bbcodetext.replace(/<HR[^>]*>/gi, "[hr]");
+    bbcodetext = bbcodetext.replace(/<DEL>/gi, "[s]");
+    bbcodetext = bbcodetext.replace(/<\/DEL>/gi, "[/s]");
+    bbcodetext = bbcodetext.replace(/<STRIKE>/gi, "[s]");
+    bbcodetext = bbcodetext.replace(/<\/STRIKE>/gi, "[/s]");
+    bbcodetext = bbcodetext.replace(/<TEXTAREA[^>]*>/gi, "[code]");
+    bbcodetext = bbcodetext.replace(/<\/TEXTAREA>/gi, "[/code]");
+    bbcodetext = bbcodetext.replace(/<THEAD[^>]*>/gi, "[thead]");
+    bbcodetext = bbcodetext.replace(/<\/THEAD>/gi, "[/thead]");
+    bbcodetext = bbcodetext.replace(/<TABLE[^>]*>/gi, "[table]");
+    bbcodetext = bbcodetext.replace(/<TR[^>]*>/gi, "[tr]");
+    bbcodetext = bbcodetext.replace(/<TD[^>]*>/gi, "[td]");
+    bbcodetext = bbcodetext.replace(/<TH[^>]*>/gi, "[th]");
+    bbcodetext = bbcodetext.replace(/<\/TABLE>/gi, "[/table]");
+    bbcodetext = bbcodetext.replace(/<\/TR>/gi, "[/tr]");
+    bbcodetext = bbcodetext.replace(/<\/TD>/gi, "[/td]");
+    bbcodetext = bbcodetext.replace(/<\/TH>/gi, "[/th]");
+    bbcodetext = bbcodetext.replace(/<TBODY[^>]*>/gi, "[tbody]");
+    bbcodetext = bbcodetext.replace(/<\/TBODY>/gi, "[/tbody]");
+    bbcodetext = bbcodetext.replace(/<TFOOT[^>]*>/gi, "[tfoot]");
+    bbcodetext = bbcodetext.replace(/<\/TFOOT>/gi, "[/tfoot]");
+    bbcodetext = bbcodetext.replace(/<TT>/gi, "[tt]");
+    bbcodetext = bbcodetext.replace(/<\/TT>/gi, "[/tt]");
+      
+    // The following for loop is to search anchor tags
+    // to have the right closing for mailto or http.
+    // It also does </A> tags
+    // we remove the global case in the replace function
+    for (i = 0; anchorlist[i].pos !== 0; i++) {
+      if (anchorlist[i].pos == 4) {  // if iurl
+        var startIURL = bbcodetext.indexOf("<A HREF=", 0);
+        var endIURL = bbcodetext.indexOf(">", startIURL);
 
-      if (startEmail > -1 && endEmail > -1) {
-        var email = anchorlist[i].face;
-        bbcodetext = [bbcodetext.slice(0, startEmail), "[email=", email, "]", bbcodetext.slice(endEmail+1)].join('');
-        bbcodetext = bbcodetext.replace(/<\/A>/i, "[/email]");
+        if (startIURL > -1 && endIURL > -1) {
+          var iurl = anchorlist[i].face;
+          bbcodetext = [bbcodetext.slice(0, startIURL), "[iurl=", iurl, "]", bbcodetext.slice(endIURL+1)].join('');
+          bbcodetext = bbcodetext.replace(/<\/A>/i, "[/iurl]");
+        }
       }
-    }  // end if mailto:
-  }  // end for loop for anchor tags
-            
-  // This replaces all remaining HTML code between < and >
-  // bbcodetext = bbcodetext.replace(/<[^>]*>/g, "");
-  
-  // The following for loop searches through all textareas.
-  // It takes place after all < > tags have been removed
-  // because it needs to go back in and put all the data
-  // back into the <TEXTAREA></TEXTAREA> tags unchanged.
-  for (i = 0; textarealist[i].pos !== 0; i++) {
-    if (textarealist[i].pos == 1) {
-      // turn textarea to BB Codes [code] tag
-      bbcodetext = bbcodetext.replace(/\[code\][\w\W]*?\[\/code\]/i, "[code]" + textarealist[i].face + "[/code]");
-    }  // end if TEXTAREA
-  }  // end for loop for textarea tags
-  
-  return bbcodetext;
-} // end function convert()
+      if (anchorlist[i].pos == 3) {  // if FTP
+        var startFTP = bbcodetext.indexOf("<A HREF=", 0);
+        var endFTP = bbcodetext.indexOf(">", startFTP);
+
+        if (startFTP > -1 && endFTP > -1) {
+          var ftp = anchorlist[i].face;
+          bbcodetext = [bbcodetext.slice(0, startFTP), "[ftp=ftp:", ftp, "]", bbcodetext.slice(endFTP+1)].join('');
+          bbcodetext = bbcodetext.replace(/<\/A>/i, "[/ftp]");
+        }
+      }
+      if (anchorlist[i].pos == 2) { // if URL
+        var startURL = bbcodetext.indexOf("<A HREF=", 0);
+        var endURL = bbcodetext.indexOf(">", startURL);
+
+        if (startURL > -1 && endURL > -1) {
+          var url = anchorlist[i].face;
+          bbcodetext = [bbcodetext.slice(0, startURL), "[url=", url, "]", bbcodetext.slice(endURL+1)].join('');
+          bbcodetext = bbcodetext.replace(/<\/A>/i, "[/url]");
+        }
+      }  // end if URL
+      if (anchorlist[i].pos == 1) { // if mailto:
+        var startEmail = bbcodetext.indexOf("<A HREF=", 0);
+        var endEmail = bbcodetext.indexOf(">", startEmail);
+
+        if (startEmail > -1 && endEmail > -1) {
+          var email = anchorlist[i].face;
+          bbcodetext = [bbcodetext.slice(0, startEmail), "[email=", email, "]", bbcodetext.slice(endEmail+1)].join('');
+          bbcodetext = bbcodetext.replace(/<\/A>/i, "[/email]");
+        }
+      }  // end if mailto:
+    }  // end for loop for anchor tags
+              
+    // This replaces all remaining HTML code between < and >
+    // bbcodetext = bbcodetext.replace(/<[^>]*>/g, "");
+    
+    // The following for loop searches through all textareas.
+    // It takes place after all < > tags have been removed
+    // because it needs to go back in and put all the data
+    // back into the <TEXTAREA></TEXTAREA> tags unchanged.
+    for (i = 0; textarealist[i].pos !== 0; i++) {
+      if (textarealist[i].pos == 1) {
+        // turn textarea to BB Codes [code] tag
+        bbcodetext = bbcodetext.replace(/\[code\][\w\W]*?\[\/code\]/i, "[code]" + textarealist[i].face + "[/code]");
+      }  // end if TEXTAREA
+    }  // end for loop for textarea tags
+    
+    return bbcodetext;
+  } // end function convert()
+};

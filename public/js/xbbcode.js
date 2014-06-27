@@ -190,7 +190,7 @@ var XBBCODE = (function() {
                 var myEmail;
                 if (!params) {
                     myEmail = content.replace(/<.*?>/g,"");
-                } 
+                }
                 else {
                     myEmail = params.substr(1);
                 }
@@ -211,7 +211,7 @@ var XBBCODE = (function() {
                 var thisFtp = "";
                 if (!params) {
                     thisFtp = content.replace(/<.*?>/g,"");
-                } 
+                }
                 else {
                     thisFtp = params.substr(1);
                 }
@@ -306,7 +306,7 @@ var XBBCODE = (function() {
 
                 if (!params) {
                     myUrl = content.replace(/<.*?>/g,"");
-                } 
+                }
                 else {
                     myUrl = params.substr(1);
                 }
@@ -441,7 +441,7 @@ var XBBCODE = (function() {
         },
         "size": {
             openTag: function(params,content) {
-                var params = params || '';
+                params = params || '';
                 var size = params.substr(1) || "inherit";
                 sizePattern.lastIndex = 0;
                 if (!sizePattern.test(size)) {
@@ -880,3 +880,5 @@ var XBBCODE = (function() {
 
     return me;
 })();
+
+module.exports = XBBCODE;

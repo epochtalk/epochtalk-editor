@@ -4,7 +4,9 @@
   "description": "Post editor for epochtalk",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install": "./node_modules/.bin/napa",
+    "build": "./node_modules/.bin/browserify -t cssify -t brfs -t browserify-ngmin app.js -o public/js/bundle.js && ./node_modules/.bin/uglifyjs 'public/js/bundle.js' -c -m -o public/js/bundle.min.js",
+    "start": "node ./index.js"
   },
   "repository": {
     "type": "git",
@@ -16,9 +18,25 @@
     "url": "https://github.com/slickage/epochtalk-editor/issues"
   },
   "homepage": "https://github.com/slickage/epochtalk-editor",
+  "napa": {
+    "angular": "angular/bower-angular",
+    "angular-cookies": "angular/bower-angular-cookies",
+    "angular-resource": "angular/bower-angular-resource",
+    "angular-route": "angular/bower-angular-route",
+    "angular-sanitize": "angular/bower-angular-sanitize"
+  },
   "dependencies": {
-    "medium-editor": "^1.8.0",
+    "brfs": "^1.1.1",
+    "browserify": "^4.1.11",
+    "browserify-ngmin": "^0.1.0",
+    "cssify": "^0.5.1",
+    "ejs": "^1.0.0",
     "express": "^4.0.0",
-    "ejs": "^1.0.0"
+    "medium-editor": "^1.8.0",
+    "napa": "^0.4.1",
+    "uglify-js": "^2.4.14"
+  },
+  "devDependencies": {
+    "napa": "^0.4.1"
   }
 }

@@ -1,3 +1,6 @@
+var bbcodeParser = require('./bbcodeParser');
+var xbbcode = require('./xbbcode');
+
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
   'editorDirectives',
@@ -73,14 +76,16 @@ angular.module('editorDirectives', [])
         previewElement = angular.element(previewElement);
 
         // on load ng-model text to editor and preview
-        var bbcode = convert(scope.text);
+        var bbcode = bbcodeParser.convert(scope.text);
+        // var bbcode = convert(scope.text);
         bbcodeElement.text(bbcode);
         previewElement.html(scope.text);
 
         // bind changes to the div to the preview and the parent controller
         var onChange = function() {
           // process BBCode
-          var processed = XBBCODE.process({text: bbcodeElement.html()}).html;
+          var processed = xbbcode.process({text: bbcodeElement.html()}).html;
+          // var processed = XBBCODE.process({text: bbcodeElement.html()}).html;
           previewElement.html(processed);
           scope.saveText({ text: bbcodeElement.html() });
         };
