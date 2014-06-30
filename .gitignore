@@ -2,3 +2,6 @@
 node_modules
 tmp/*
 .npm-debug.log
+
+/public/js/bundle.js
+/public/js/bundle.min.js
