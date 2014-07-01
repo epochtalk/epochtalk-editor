@@ -1,5 +1,7 @@
 var bbcodeParser = require('./bbcodeParser');
 var xbbcode = require('./xbbcode');
+var fs = require('fs');
+
 
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
@@ -92,6 +94,6 @@ angular.module('editorDirectives', [])
         bbcodeElement.on('input', onChange);
         bbcodeElement.on('blur', onChange);
       },
-      templateUrl: "templates/editor.html"
+      template: fs.readFileSync(__dirname + '/../templates/editor.html')
     };
   });
