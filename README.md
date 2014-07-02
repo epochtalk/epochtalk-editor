@@ -12,11 +12,31 @@ To build this editor use:
 ```
 npm run build
 ```  
-This will run Browserify with CSSify and BRFS to bundle all the js/css into one file. Then Uglify is used to minify, compress, and remove unused code. The final file is left in the public/js dir. 
+This will run Browserify with CSSify and BRFS to bundle all the js/css into one file. Then Uglify is used to minify, compress, and remove unused code. Both the uncompressed bundle.js file and the compressed bundle.min.js file are left in the test/public/js dir. 
 
 
-To run this editor as a standalone:  
+To run this editor as a standalone test:  
 ```
 npm run start
 ```  
 This will bring up a instance of node webserver running on port 8080. 
+
+
+### Example Code:
+ ```node
+ // require angular
+require('angular/angular');
+
+// Angular starter app
+var app = angular.module('myApp', []);
+
+// Angular Controller:
+// Used to supply data to the editor
+app.controller('editorCtrl', ['$scope', function($scope) {
+  $scope.editorText = '';
+  $scope.save = function(text) { $scope.editorText = text; };
+}]);
+
+// Epochtalk-editor directive
+require('./../app')(app);
+```

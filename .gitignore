@@ -3,7 +3,7 @@ node_modules
 tmp/*
 .npm-debug.log
 
-/public/js/bundle.js
-/public/js/bundle.min.js
+/test/public/js/bundle.js
+/test/public/js/bundle.min.js
 /app/css/default.css
 /app/css/medium-editor.css

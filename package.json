@@ -2,11 +2,11 @@
   "name": "epochtalk-editor",
   "version": "0.0.0",
   "description": "Post editor for epochtalk",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "install": "./node_modules/.bin/napa && ./copyCSS.sh",
-    "build": "./node_modules/.bin/browserify -t cssify -t brfs -t browserify-ngmin app.js -o public/js/bundle.js && ./node_modules/.bin/uglifyjs 'public/js/bundle.js' -c -m -o public/js/bundle.min.js",
-    "start": "node ./index.js"
+    "build": "./node_modules/.bin/browserify -t cssify -t brfs -t browserify-ngmin test/testapp.js -o test/public/js/bundle.js && ./node_modules/.bin/uglifyjs 'test/public/js/bundle.js' -c -m -o test/public/js/bundle.min.js",
+    "start": "npm run build && node ./test/index.js"
   },
   "repository": {
     "type": "git",

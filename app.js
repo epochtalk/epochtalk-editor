@@ -1,12 +1,7 @@
-// require all angular items
-require('angular/angular');
-require('angular-cookies/angular-cookies');
-require('angular-resource/angular-resource');
-require('angular-route/angular-route');
-require('angular-sanitize/angular-sanitize');
-
-// custom JS
-require('./app/js/main');
+// Editor JS
+module.exports = function(app) {
+  app.directive('epochtalkEditor', require('./app/js/directive'));
+};
 
 // css
 require('./app/css/style.css');
