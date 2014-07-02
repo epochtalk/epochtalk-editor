@@ -5,3 +5,5 @@ tmp/*
 
 /public/js/bundle.js
 /public/js/bundle.min.js
+/app/css/default.css
+/app/css/medium-editor.css
