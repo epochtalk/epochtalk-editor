@@ -40,3 +40,10 @@ app.controller('editorCtrl', ['$scope', function($scope) {
 // Epochtalk-editor directive
 require('./../app')(app);
 ```
+
+
+### Running with Napa
+If you're using napa to install this editor. Make sure that the medium-editor node module is also installed. You can install this module by running: 
+```
+npm install medium-editor
+```
