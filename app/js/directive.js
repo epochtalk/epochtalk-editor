@@ -4,7 +4,6 @@ var fs = require('fs');
 
 module.exports = function() {
   return {
-    // require: 'ngModel',
     restrict: 'E',
     scope: {
       text: "=",

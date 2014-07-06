@@ -19,11 +19,7 @@
   },
   "homepage": "https://github.com/slickage/epochtalk-editor",
   "napa": {
-    "angular": "angular/bower-angular",
-    "angular-cookies": "angular/bower-angular-cookies",
-    "angular-resource": "angular/bower-angular-resource",
-    "angular-route": "angular/bower-angular-route",
-    "angular-sanitize": "angular/bower-angular-sanitize"
+    "angular": "angular/bower-angular"
   },
   "dependencies": {
     "brfs": "^1.1.1",
